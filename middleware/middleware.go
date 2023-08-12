@@ -9,7 +9,7 @@ import (
 func AuthReq() func(*fiber.Ctx) error {
 	cfg := basicauth.Config{
 			Users: map[string]string{
-				config.Config("USERNAME"): config.Config("PASSWORD"),
+				config.GetEnvStr("USERNAME"): config.GetEnvStr("PASSWORD"),
 			},
 		}
 	err := basicauth.New(cfg);

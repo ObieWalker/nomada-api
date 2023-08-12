@@ -47,6 +47,11 @@ func ConnectDb() {
 		log.Fatal("could not migrate bikes")
 	}
 
+	err = model.MigrateGroups(db)
+	if err != nil {
+		log.Fatal("could not migrate bikes")
+	}
+
 	Instance = Dbinstance{
 		Db: db,
 	}
