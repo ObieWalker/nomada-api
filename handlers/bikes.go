@@ -7,11 +7,6 @@ import (
   "github.com/obiewalker/nomada-api/pkg/database/models"
 )
 
-type Response struct {
-  Id string
-}
-
-
 func CreateBike(c *fiber.Ctx) ( error) { 
   r := new(model.BikeRequest)
 
@@ -37,7 +32,7 @@ func CreateBike(c *fiber.Ctx) ( error) {
   return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "data": fiber.Map{"bike": bike}})
 }
 
-func UpdateBike(c *fiber.Ctx) (error) { 
+func UpdateBike(c *fiber.Ctx) (error) {
   id := c.Params("id")
   updateBike := new(model.BikeRequest)
 
@@ -63,6 +58,17 @@ func UpdateBike(c *fiber.Ctx) (error) {
   return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "data": fiber.Map{"bike": bike}})
 }
 
+func UpdateThumbnail(c *fiber.Ctx) (error) { 
+  id := c.Params("id")
+
+  bike, err := crud.FindBike(database.Instance.Db, id)
+  if err != nil {
+    return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": err.Error()})
+  }
+
+  return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "data": fiber.Map{"bike": bike}})
+}
+
 func GetBike(c *fiber.Ctx) (error) { 
   id := c.Params("id")
 
@@ -75,12 +81,22 @@ func GetBike(c *fiber.Ctx) (error) {
 }
 
 func GetUsersBike(c *fiber.Ctx) (error) { 
-  id := c.Params("id")
-  user, err := crud.PreloadUsers(database.Instance.Db, id, "Bikes")
+  id := c.Params("userId")
+  user, err := crud.PreloadUsersBikes(database.Instance.Db, id, "Bikes")
   if err != nil {
     return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": err.Error()})
   }
   return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "data": fiber.Map{"user": model.FilterUserBike(&user)}})
+}
+
+func GetOwnBike(c *fiber.Ctx) (error) {
+  user := c.Locals("user").(model.UserResponse)
+
+  userData, err := crud.PreloadUsersBikes(database.Instance.Db, user.ID, "Bikes")
+  if err != nil {
+    return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": err.Error()})
+  }
+  return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "data": fiber.Map{"user": model.FilterUserBike(&userData)}})
 }
 
 func DisableBike(c *fiber.Ctx) (error) { 

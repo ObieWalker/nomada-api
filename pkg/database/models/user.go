@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 	"gorm.io/gorm"
-	"github.com/google/uuid"
+	// "github.com/google/uuid"
 )
 
 type User struct {
@@ -21,6 +21,7 @@ type User struct {
 	Thumbnail			string 		`json:"photo"`
 	Session 			Session
 	Bikes					[]Bike
+	Groups				[]*Group				`gorm:"many2many:user_groups;"`
 }
 
 type LoginUserRequest struct {
@@ -54,7 +55,7 @@ type UserResponse struct {
 }
 
 func FilterUserRecord(user *User) UserResponse {
-	return UserResponse{
+	return UserResponse {
 		ID:        		user.ID,
 		Firstname:  	user.Firstname,
 		Ridename:			user.Ridename,
@@ -86,15 +87,10 @@ func FilterGetUsers(users []User) []UserResponse {
 	return filteredUsers
 }
 
-type Geo struct {
-	Longtitude   float64 `gorm:"type:decimal(10,8)"`
-	Latitude     float64 `gorm:"type:decimal(11,8)"`
-}
-
-func (user *User) BeforeCreate(tx *gorm.DB) (err error) {
-	user.ID = uuid.New().String()
-	return
- }
+// func (user *User) BeforeCreate(tx *gorm.DB) (err error) {
+// 	user.ID = uuid.New().String()
+// 	return
+//  }
 
 func MigrateUsers(db *gorm.DB) error {
 	err := db.AutoMigrate(&User{})
