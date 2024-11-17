@@ -9,8 +9,8 @@ type UserGroup struct {
 	gorm.Model
 	UserID				string			`gorm:"primaryKey"`
 	GroupID				string			`gorm:"primaryKey"`
-	Stoppage			bool				`json:"stoppage"gorm:"default:false"`
-	IsHome				bool				`json:"is_home"gorm:"default:false"`
+	Stoppage			bool				`json:"stoppage" gorm:"default:false"`
+	IsHome				bool				`json:"is_home" gorm:"default:false"`
 	CreatedAt 		time.Time
   DeletedAt 		gorm.DeletedAt
 }

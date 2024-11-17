@@ -10,14 +10,14 @@ import (
 type User struct {
 	gorm.Model
 	ID        		string 		`gorm:"type:uuid;primary_key;"`
-	Firstname 		string		`json:"firstname"  			gorm:"text;not null;default:null"`
-	Lastname 			string		`json:"lastname"  			gorm:"text;default:null"`
-	Ridename			string		`json:"ridename"				gorm:"text;default:null"`
-	IsDisabled 		bool 			`json:"is_disabled"	  	gorm:"default:false"`
-	State 				string 		`json:"state"  					gorm:"text;default:null"`
-	Country	  		string 		`json:"country"		  		gorm:"text;default:null"`
+	Firstname 		string		`json:"firstname" gorm:"type:text;not null;default:'null'"`
+	Lastname 			string		`json:"lastname" gorm:"text;default:null"`
+	Ridename			string		`json:"ridename" gorm:"text;default:null"`
+	IsDisabled 		bool 			`json:"is_disabled" gorm:"default:false"`
+	State 				string 		`json:"state" gorm:"text;default:null"`
+	Country	  		string 		`json:"country" gorm:"text;default:null"`
 	Email		  		string 		`json:"email,omitempty" mapstructure:"email" csv:"Email,required" gorm:"unique;not null"`
-	PasswordHash 	string		`json:"password"			  binding:"required"`
+	PasswordHash 	string		`json:"password" binding:"required"`
 	Thumbnail			string 		`json:"photo"`
 	Session 			Session
 	Bikes					[]Bike

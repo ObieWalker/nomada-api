@@ -9,12 +9,12 @@ import (
 type Bike struct {
 	gorm.Model
 	ID        		string 		`gorm:"type:uuid;primary_key;"`
-	BikePlate 		string		`json:"plate"  			gorm:"text;default:null"`
-	BikeMake 			string		`json:"make"  			gorm:"text;default:null"`
-	BikeModel	 	  string 		`json:"model"				gorm:"text;default:null"`
-	BikeYear 			string 		`json:"year"		  	gorm:"text;default:null"`
+	BikePlate 		string		`json:"plate" gorm:"text;default:null"`
+	BikeMake 			string		`json:"make" gorm:"text;default:null"`
+	BikeModel	 	  string 		`json:"model" gorm:"text;default:null"`
+	BikeYear 			string 		`json:"year" gorm:"text;default:null"`
 	Thumbnail			string 		`json:"photo"`
-	NotInUse			bool			`json:"not_in_use"	gorm:"default:false"`
+	NotInUse			bool			`json:"not_in_use" gorm:"default:false"`
 	UserID 				string	  `gorm:"type:uuid;column:user_foreign_key;not null;"`
 }
 
