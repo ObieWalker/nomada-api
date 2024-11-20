@@ -1,16 +1,23 @@
-FROM golang:1.19.0
+# Start from the official Go image
+FROM golang:1.23.3
 
-RUN mkdir /app
-
-ADD . /app
-
+# Set the Current Working Directory inside the container
 WORKDIR /app
 
-RUN go install github.com/cosmtrek/air@latest
+# Copy go.mod and go.sum files
+COPY go.mod go.sum ./
 
+# Download all dependencies. Dependencies will be cached if the go.mod and go.sum files are not changed
+RUN go mod download
+
+# Copy the source from the current directory to the Working Directory inside the container
 COPY . .
-RUN go mod tidy
-# RUN go build -o main ./cmd/main.go
 
-# EXPOSE 3000
-# CMD [ "/app/main" ]
+# Build the Go app
+RUN go build -o /app/cmd/main /app/cmd/main.go
+
+# Expose port 3000 to the outside world
+EXPOSE 3000
+
+# Run the executable
+CMD ["/app/cmd/main"]

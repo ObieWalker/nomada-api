@@ -1,16 +1,23 @@
-FROM golang:1.19.0
-
-RUN mkdir /app
-
-ADD . /app
+FROM golang:1.23.3
 
 WORKDIR /app
 
-RUN go install github.com/cosmtrek/air@latest
+RUN git config --global --add safe.directory ~/git/go-workspace/github.com/obiewalker/nomada-api
+
+COPY go.mod go.sum ./
+
+RUN go mod download
+
+# RUN go install github.com/air-verse/air@latest
 
 COPY . .
 RUN go mod tidy
-# RUN go build -o main ./cmd/main.go
 
-# EXPOSE 3000
-# CMD [ "/app/main" ]
+# Build the Go app
+RUN go build -o /app/cmd/main /app/cmd/main.go
+
+# Expose port 3000 to the outside world
+EXPOSE 3000
+
+# Run the executable
+CMD ["/app/cmd/main"]
