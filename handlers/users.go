@@ -25,7 +25,7 @@ func Home(c *fiber.Ctx) error {
 }
 
 func Signup(c *fiber.Ctx) (error) { 
-  r := new(model.LoginUserRequest)
+  r := new(model.SignUpUserRequest)
 
   if err := c.BodyParser(r); err != nil {
       return err
@@ -34,7 +34,13 @@ func Signup(c *fiber.Ctx) (error) {
   user, err := signup.Signup(database.Instance.Db, &signup.Request{
     Email: strings.ToLower(r.Email),
     Password: r.Password,
+    Firstname: r.Firstname,
+    Lastname: r.Lastname,
+    Ridename: r.Ridename,
+    State: r.State,
+    Country: r.Country,
   })
+
 	if err != nil {
     switch err.(type){
     case *model.EmailDuplicateError:
@@ -173,10 +179,17 @@ func Logout(c *fiber.Ctx) (error) {
 //   })
 // }
 
+// @Summary Get Current User
+// @Description Get user by Token
+// @Tags Users
+// @Param id path int true "User ID"
+// @Success 200 {object} User
+// @Router /users/{id} [get]
 func GetCurrentUser(c *fiber.Ctx) (error) {
-	user := c.Locals("user").(model.UserResponse)
+	// user := c.Locals("user").(model.UserResponse)
 
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "data": fiber.Map{"user": user}})
+	// return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "data": fiber.Map{"user": user}})
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "data": fiber.Map{"user": "works"}})
 }
 
 func ChangePassword(c *fiber.Ctx) (error) {

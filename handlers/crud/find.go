@@ -2,7 +2,6 @@ package crud
 
 import (
 	"gorm.io/gorm"
-  // "fmt"
   "github.com/gofiber/fiber/v2"
   "github.com/obiewalker/nomada-api/pkg/database/models"
   "github.com/obiewalker/nomada-api/pkg/database"
