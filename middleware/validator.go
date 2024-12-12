@@ -6,8 +6,8 @@ import (
 )
 
 type Request struct {
-  Email    string `validate:"required,min=5,max=20"` 
-  Password string `validate:"required,min=4,max=36"` 
+  Email    string `validate:"required,min=5,max=36"` 
+  Password string `validate:"required,min=4,max=50"` 
 }
 
 type IError struct {

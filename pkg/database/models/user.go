@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 	"gorm.io/gorm"
-	// "github.com/google/uuid"
+	"github.com/google/uuid"
 )
 
 type User struct {
@@ -25,16 +25,26 @@ type User struct {
 }
 
 type LoginUserRequest struct {
-  Email    string `validate:"required,min=5,max=20"` 
-  Password string `validate:"required,min=4,max=36"` 
+  Email    string `validate:"required,min=5,max=36"` 
+  Password string `validate:"required,min=4,max=50"`
+}
+
+type SignUpUserRequest struct {
+  Email    			string 		`validate:"required,min=5,max=36"` 
+  Password 			string 		`validate:"required,min=4,max=50"`
+	Firstname 		string		`validate:"required,min=2,max=20"`
+	Lastname 			string		`validate:"required,min=2,max=20"`
+	Ridename			string		`validate:"required,min=1,max=20"`
+	State 				string 		`validate:"required,min=2,max=20"`
+	Country	 			string		`validate:"required,min=2,max=20"`
 }
 
 type ChangePasswordReqest struct {
-  Password string `validate:"required,min=4,max=36"` 
+  Password string `validate:"required,min=4,max=50"` 
 }
 
 type UserRequest struct {
-  Email    			string 		`validate:"required,min=5,max=20"`
+  Email    			string 		`validate:"required,min=5,max=36"`
 	Firstname 		string		`validate:"required,min=2,max=20"`
 	Lastname 			string		`validate:"required,min=2,max=20"`
 	Ridename			string		`validate:"required,min=1,max=20"`
@@ -87,10 +97,10 @@ func FilterGetUsers(users []User) []UserResponse {
 	return filteredUsers
 }
 
-// func (user *User) BeforeCreate(tx *gorm.DB) (err error) {
-// 	user.ID = uuid.New().String()
-// 	return
-//  }
+func (user *User) BeforeCreate(tx *gorm.DB) (err error) {
+	user.ID = uuid.New().String()
+	return
+ }
 
 func MigrateUsers(db *gorm.DB) error {
 	err := db.AutoMigrate(&User{})

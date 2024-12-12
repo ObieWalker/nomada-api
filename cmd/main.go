@@ -21,14 +21,17 @@ func main() {
 		AllowHeaders:     "Origin, Content-Type, Accept",
     AllowCredentials: true,
 	}))
+
 	setupRoutes(app)
-	app.Listen(":3000")
+	app.Listen("0.0.0.0:3000")
+
 }
 
 func setupRoutes(app *fiber.App) {
 	api := app.Group("/api", logger.New())  
 
 	api.Get("/", handlers.Home)
+
 	api.Get("/me", middleware.DeserializeUser, handlers.GetCurrentUser)
 	api.Post("/login", middleware.ValidateCredentials, handlers.Login)
 	api.Post("/signup", middleware.ValidateCredentials, handlers.Signup)

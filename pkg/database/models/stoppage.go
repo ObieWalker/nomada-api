@@ -24,8 +24,8 @@ type Stoppage struct {
 type StoppageRequest struct {
 	ID        	 		string	`json:"id,omitempty"`
   StoppageType    StoppageType 
-  Description  		string `validate:"requird,min=2,max=40"` 
+  Description  		string `validate:"requird,min=2,max=100"` 
   Location 	 			Geo
-  LocationDesc 	  string `validate:"min=2,max=40"`
+  LocationDesc 	  string `validate:"min=2,max=100"`
 }
 

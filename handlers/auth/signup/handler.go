@@ -12,6 +12,11 @@ type (
   Request struct {
     Email    string
     Password string
+    Firstname string
+    Lastname string
+    Ridename string
+    State string
+    Country string
   }
 
   Response struct {
@@ -28,6 +33,11 @@ func Signup(db *gorm.DB, req *Request) (*Response, error) {
   newUser := &model.User{
 		Email:        req.Email,
 		PasswordHash: string(passwordHash),
+    Firstname: req.Firstname,
+    Lastname: req.Lastname,
+    Ridename: req.Ridename,
+    State: req.State,
+    Country: req.Country,
   }
 
 	user, err := crud.CreateUser(db, newUser)

@@ -22,8 +22,8 @@ type BikeRequest struct {
 	ID        	 string	`json:"id,omitempty"`
   BikePlate    string `validate:"min=2,max=10"` 
   BikeMake 		 string `validate:"requird,min=2,max=12"` 
-  BikeModel 	 string `validate:"min=4,max=36"` 
-  BikeYear 		 string `validate:"min=2,max=5"`
+  BikeModel 	 string `validate:"min=4,max=20"` 
+  BikeYear 		 string `validate:"min=2,max=6"`
 }
 
 type UserBikeResponse struct {
