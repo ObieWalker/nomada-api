@@ -1,11 +1,13 @@
 package handlers
 
 import (
+	"fmt"
+
 	"github.com/gofiber/fiber/v2"
-  "github.com/obiewalker/nomada-api/pkg/database"
-  "github.com/obiewalker/nomada-api/handlers/crud"
-  "github.com/obiewalker/nomada-api/pkg/database/models"
-  "github.com/obiewalker/nomada-api/handlers/transactions"
+	"github.com/obiewalker/nomada-api/handlers/crud"
+	"github.com/obiewalker/nomada-api/handlers/transactions"
+	"github.com/obiewalker/nomada-api/pkg/database"
+	"github.com/obiewalker/nomada-api/pkg/database/models"
 )
 
 func CreateGroup(c *fiber.Ctx) ( error) { 
@@ -66,11 +68,19 @@ func JoinGroup(c *fiber.Ctx) (error) {
   groupId := c.Params("groupId")
   user := c.Locals("user").(model.UserResponse)
 
+  fmt.Println("---------user---------------")
+  fmt.Print(user.ID)  
+  fmt.Println("---------group id---------------")
+  fmt.Print(groupId)
   userData, groupData, err := transaction.AddUserTransaction(database.Instance.Db, groupId, user.ID)
   if err != nil {
     return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": err.Error()})
   }
 
+  fmt.Println("-----------------userdata id")
+  fmt.Println(userData.ID)
+  fmt.Println("-----------------groupdata id")
+  fmt.Println(groupData.ID)
   return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "data": fiber.Map{"userId": userData.ID, "groupId": groupData.ID}})
 }
 

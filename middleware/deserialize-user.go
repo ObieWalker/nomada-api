@@ -38,7 +38,7 @@ func DeserializeUser(c *fiber.Ctx) error {
 
 	claims, ok := tokenByte.Claims.(jwt.MapClaims)
 	if !ok || !tokenByte.Valid {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "fail", "message": "invalid token claim"})
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "fail", "message": "Invalid token claim."})
 
 	}
 
@@ -48,7 +48,7 @@ func DeserializeUser(c *fiber.Ctx) error {
 	db.First(&user, "id = ?", fmt.Sprint(claims["sub"]))
 
 	if user.ID != claims["sub"] {
-		return c.Status(fiber.StatusForbidden).JSON(fiber.Map{"status": "fail", "message": "the user belonging to this token no logger exists"})
+		return c.Status(fiber.StatusForbidden).JSON(fiber.Map{"status": "fail", "message": "Unauthorised Token."})
 	}
 
 	c.Locals("user", model.FilterUserRecord(&user))

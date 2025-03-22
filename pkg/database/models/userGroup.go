@@ -31,7 +31,6 @@ type UserGroupRequest struct {
 // }
 
 // func (userGroup *UserGroup) BeforeCreate(tx *gorm.DB) (err error) {
-// 	fmt.Println("-----------------Inside before create for usergroup")
 
 // 	userGroup.ID = uuid.New().String()
 // 	return

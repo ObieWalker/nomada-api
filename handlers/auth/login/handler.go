@@ -21,7 +21,7 @@ func (e *PasswordMismatchError) Error() string {
   return "Email does not exist or password is wrong."
 }
 
-func Login(db *gorm.DB, req *Request) (*Response, error) { 
+func Login(db *gorm.DB, req *Request) (*model.User, error) { 
 
   user, err := crud.FindByEmail(db, req.Email)
   if err != nil {
@@ -32,5 +32,5 @@ func Login(db *gorm.DB, req *Request) (*Response, error) {
   if err != nil {
     return nil, &PasswordMismatchError{}
   }
-  return &Response{User: user}, nil
+  return user, nil
 }

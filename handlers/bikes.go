@@ -58,17 +58,6 @@ func UpdateBike(c *fiber.Ctx) (error) {
   return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "data": fiber.Map{"bike": bike}})
 }
 
-func UpdateThumbnail(c *fiber.Ctx) (error) { 
-  id := c.Params("id")
-
-  bike, err := crud.FindBike(database.Instance.Db, id)
-  if err != nil {
-    return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "message": err.Error()})
-  }
-
-  return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "data": fiber.Map{"bike": bike}})
-}
-
 func GetBike(c *fiber.Ctx) (error) { 
   id := c.Params("id")
 

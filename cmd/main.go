@@ -1,25 +1,25 @@
 package main
 
 import (
-	"github.com/obiewalker/nomada-api/pkg/database"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/obiewalker/nomada-api/config"
+	"github.com/obiewalker/nomada-api/pkg/database"
 
-	"github.com/obiewalker/nomada-api/handlers"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/obiewalker/nomada-api/handlers"
 	"github.com/obiewalker/nomada-api/middleware"
 )
 
 func main() {
 
 	database.ConnectDb()
-	
+
 	app := fiber.New()
 	app.Use(cors.New(cors.Config{
-    AllowOrigins:     config.GetEnvStr("CLIENT_ORIGIN"),
+		AllowOrigins:     config.GetEnvStr("CLIENT_ORIGIN"),
 		AllowHeaders:     "Origin, Content-Type, Accept",
-    AllowCredentials: true,
+		AllowCredentials: true,
 	}))
 
 	setupRoutes(app)
@@ -28,7 +28,7 @@ func main() {
 }
 
 func setupRoutes(app *fiber.App) {
-	api := app.Group("/api", logger.New())  
+	api := app.Group("/api", logger.New())
 
 	api.Get("/", handlers.Home)
 
@@ -44,12 +44,13 @@ func setupRoutes(app *fiber.App) {
 	// api.Get("/auth/refresh", handlers.RefreshToken)
 
 	api.Post("/bike", middleware.DeserializeUser, handlers.CreateBike)
-	api.Put("/bike/:id/thumbnail", middleware.DeserializeUser, handlers.UpdateThumbnail)
 	api.Put("/bike/:id", middleware.DeserializeUser, handlers.UpdateBike)
 	api.Get("/bike/:id", handlers.GetBike)
 	api.Get("/user/:userId/bike", handlers.GetUsersBike)
-	api.Get("/user/bike", handlers.GetOwnBike)
+	api.Get("/usersbike", handlers.GetOwnBike)
 	api.Delete("/bike/:id", middleware.DeserializeUser, handlers.DisableBike)
+	// I do not know if users should actually be able to fully delete bikes
+	// as opposed to just disable
 	// api.Delete("/bike/:id", middleware.DeserializeUser, handlers.DeleteBike)
 
 	api.Post("/group", middleware.DeserializeUser, handlers.CreateGroup)
@@ -60,17 +61,17 @@ func setupRoutes(app *fiber.App) {
 	api.Delete("/group/:groupId", middleware.DeserializeUser, handlers.DeleteGroup)
 
 	api.Post("/group/:groupId/user", middleware.DeserializeUser, handlers.JoinGroup)
-	api.Get("/group/:groupId/users", handlers.GetGroupUsers)
+	api.Get("/groupusers/:groupId/", handlers.GetGroupUsers)
 	api.Put("/group/:groupId/user/:userId", middleware.DeserializeUser, handlers.AddUserToGroup)
-	api.Delete("/group/:groupId/user/:userId",  middleware.DeserializeUser, handlers.DeleteUserFromGroup)
-	api.Delete("/group/:groupId/user",  middleware.DeserializeUser, handlers.LeaveGroup)
+	api.Delete("/group/:groupId/user/:userId", middleware.DeserializeUser, handlers.DeleteUserFromGroup)
+	api.Delete("/group/:groupId/user", middleware.DeserializeUser, handlers.LeaveGroup)
 
-	api.Post("/ride",  middleware.DeserializeUser, handlers.CreateRide)
-	api.Put("/ride/:id/start",  middleware.DeserializeUser, handlers.StartRide)
-	api.Put("/ride/:id/stop",  middleware.DeserializeUser, handlers.StopRide)
-	api.Put("/ride/:id",  middleware.DeserializeUser, handlers.UpdateRide)
-	api.Get("/ride/:id",  middleware.DeserializeUser, handlers.GetRide)
-	api.Delete("/ride/:id",  middleware.DeserializeUser, handlers.DeleteRide)
+	api.Post("/ride", middleware.DeserializeUser, handlers.CreateRide)
+	api.Put("/ride/:id/start", middleware.DeserializeUser, handlers.StartRide)
+	api.Put("/ride/:id/stop", middleware.DeserializeUser, handlers.StopRide)
+	api.Put("/ride/:id", middleware.DeserializeUser, handlers.UpdateRide)
+	api.Get("/ride/:id", middleware.DeserializeUser, handlers.GetRide)
+	api.Delete("/ride/:id", middleware.DeserializeUser, handlers.DeleteRide)
 
 	api.Post("/stoppage", handlers.CreateStoppage)
 	api.Put("/stoppage", handlers.UpdateStoppage)
@@ -84,4 +85,3 @@ func setupRoutes(app *fiber.App) {
 	// api.Get("/route/:id", handlers.GetRoute)
 	// api.Delete("/route", handlers.DeleteRoute)
 }
-

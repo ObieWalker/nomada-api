@@ -90,7 +90,7 @@ func AddUserToGroup(db *gorm.DB, groupId string, userId string) (model.User, mod
 		return user, group, err
 	}
 
-	group.Members = append(group.Members, &user)
+	group.Members = append(group.Members, user)
 	if err := db.Save(&group).Error; err != nil {
 		return user, group, err
 	}

@@ -9,14 +9,13 @@ type Group struct {
 	gorm.Model
 	ID          			string 		`gorm:"type:uuid;primary_key;"`
 	Name							string		`json:"name" gorm:"text;not null;default:null"`
-	Members 				  []*User	  `gorm:"many2many:user_groups;"`
+	Members 				  []User	  `gorm:"many2many:user_groups;"`
 	OwnerID						string		`gorm:"type:uuid;column:user_foreign_key;not null;"`
 	Owner							User			`gorm:"foreignKey:OwnerID"`
 	Ride							Ride
 }
 
 type GroupRequest struct {
-	ID				 string
   Name		   string
 }
 
